@@ -21,6 +21,7 @@ from tkinter import *;
 from tkinter import ttk;
 from tkinter.filedialog import *; # Call open file window
 from pyperclip import copy; # Copy text (HEX, DEC)
+import subprocess;
 
 def geometry(window_width, window_height):
     global window;
@@ -32,6 +33,9 @@ def geometry(window_width, window_height):
 
     window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate));
     window.resizable(width=False, height=False);
+
+def on_close():
+    subprocess.call('taskkill /f /im hexdec.exe & taskkill /f /im python.exe & taskkill /f /im pythonw.exe', shell=True);
 
 def _onKeyRelease(event): # Author: sergey.s1, Stack Overflow.
     ctrl  = (event.state & 0x4) != 0;
@@ -55,11 +59,18 @@ def select_all():
     text_output.see(INSERT);
     return 'break';
 
-def save():
+def save_hex():
     global Hex;
     f = asksaveasfilename(defaultextension = '.txt');
     f = open(f, 'w+', encoding = 'utf-8');
     f.write(Hex);
+    f.close();
+
+def save_dec():
+    global dec;
+    f = asksaveasfilename(defaultextension = '.txt');
+    f = open(f, 'w+', encoding = 'utf-8');
+    f.write(str(dec));
     f.close();
 
 def get_values():
@@ -87,7 +98,7 @@ def values():
     global window, Hex, dec, original;
 
     window = Tk();
-    geometry(500, 300);
+    geometry(500, 350);
     window.title('Hexdec');
     window.iconbitmap('logo.ico');
 
@@ -139,8 +150,17 @@ def values():
     copy_dec = ttk.Button(window, text = 'Copy', command = lambda: copy(dec));
     copy_dec.place(x = 416, y = 230);
 
-    save_hex = ttk.Button(window, text = 'Save in file', command = save);
-    save_hex.place(x = 212, y = 265);
+    save_hex_button = ttk.Button(window, text = 'Save HEX in file', command = save_hex);
+    save_hex_button.place(x = 11, y = 265);
+
+    save_dec_button = ttk.Button(window, text = 'Save DEC in file', command = save_dec);
+    save_dec_button.place(x = 11, y = 295);
+
+    len_hex_label = Label(window, text = 'Number of characters in HEX: ' + str(len(Hex)));
+    len_hex_label.place(x = 105, y = 266.5);
+
+    len_dec_label = Label(window, text = 'Number of characters in DEC: ' + str(len(str(dec))));
+    len_dec_label.place(x = 105, y = 296.5);
 
     window.mainloop();
 
@@ -175,5 +195,7 @@ get_values_button.place(x = 165, y = 220);
 
 get_text_button = ttk.Button(window, text = 'Get text', command = get_text);
 get_text_button.place(x = 165 + 90, y = 220);
+
+window.protocol('WM_DELETE_WINDOW', on_close);
 
 window.mainloop();
