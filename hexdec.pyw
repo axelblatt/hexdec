@@ -21,7 +21,10 @@ from tkinter import *;
 from tkinter import ttk;
 from tkinter.filedialog import *; # Call open file window
 from pyperclip import copy; # Copy text (HEX, DEC)
-import subprocess;
+from sys import exit;
+from subprocess import call;
+
+call('taskkill /f /im hexdec.exe', shell = True);
 
 def geometry(window_width, window_height):
     global window;
@@ -35,7 +38,8 @@ def geometry(window_width, window_height):
     window.resizable(width=False, height=False);
 
 def on_close():
-    subprocess.call('taskkill /f /im hexdec.exe & taskkill /f /im python.exe & taskkill /f /im pythonw.exe', shell=True);
+    exit();
+    # subprocess.call('taskkill /f /im hexdec.exe & taskkill /f /im python.exe & taskkill /f /im pythonw.exe', shell=True);
 
 def _onKeyRelease(event): # Author: sergey.s1, Stack Overflow.
     ctrl  = (event.state & 0x4) != 0;
