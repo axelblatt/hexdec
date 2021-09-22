@@ -21,8 +21,13 @@ from tkinter import *;
 from tkinter import ttk;
 from tkinter.filedialog import *; # Call open file window
 from pyperclip import copy; # Copy text (HEX, DEC)
-from sys import exit;
+import sys;
+import ctypes;
+from os import path;
 from subprocess import call;
+
+myappid = 'fedoregorov.hexdec.1.1' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 call('taskkill /f /im hexdec.exe', shell = True);
 
@@ -38,7 +43,7 @@ def geometry(window_width, window_height):
     window.resizable(width=False, height=False);
 
 def on_close():
-    exit();
+    sys.exit();
     # subprocess.call('taskkill /f /im hexdec.exe & taskkill /f /im python.exe & taskkill /f /im pythonw.exe', shell=True);
 
 def _onKeyRelease(event): # Author: sergey.s1, Stack Overflow.
@@ -104,7 +109,10 @@ def values():
     window = Tk();
     geometry(500, 350);
     window.title('Hexdec');
-    window.iconbitmap('logo.ico');
+    try:
+        window.iconbitmap(path.dirname(sys.executable) + '\\logo.ico');
+    except:
+        window.iconbitmap('logo.ico');
 
     original_label = Label(window, text = 'Original text:');
     original_label.pack();
@@ -173,7 +181,10 @@ Tk().withdraw();
 window = Tk();
 geometry(500, 275);
 window.title('Hexdec');
-window.iconbitmap('logo.ico');
+try:
+    window.iconbitmap(path.dirname(sys.executable) + '\\logo.ico');
+except:
+    window.iconbitmap('logo.ico');
 
 text_label = Label(window, text = 'Input text, HEX or DEC:');
 text_label.pack();
