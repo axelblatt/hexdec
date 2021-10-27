@@ -43,7 +43,8 @@ def hex_get(): # hex_get() function
 
         input('<Enter> to continue.\n');
     
-while True:
+_exit = True;
+while _exit:
     try:
         print('0 - Encode text\n1 - Encode file\n2 - Decode text\n3 - Decode file\n4 - Exit'); # Menu
         a = input(); # User input
@@ -122,7 +123,7 @@ while True:
             f.close();
 
         if a == '4':
-            break;
+            _exit = False;
 
         system('cls');
     except Exception as e: # Prevent crash
