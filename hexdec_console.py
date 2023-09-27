@@ -1,6 +1,6 @@
 '''
 Hexdec Console.
-Copyright (C) 2021 by Fedor Egorov <fedoregorov1@yandex.ru>
+Copyright (C) 2021 by Fedor Egorov
 This file is part of Hexdec.
 
 Hexdec is free software: you can redistribute it and/or modify
